@@ -4,28 +4,12 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-def dft(rd):
-    ret={}
-    ret_re=[]
-    ret_im=[]
-    n = len(rd)
-    for i in range(n):
-        re = 0.0
-        im = 0.0
-        for j in range(n):
-            re = re + (rd[j] * math.cos(2*math.pi*j*i/n))
-            im = im + (-rd[j] * math.cos(2*math.pi*j*i/n))
-        ret_re.append(re)
-        ret_im.append(im)
 
-    ret['re'] = ret_re
-    ret['im'] = ret_im
-    return ret
 
-fname = "./data/test_10kHz.wav"
+fname = "./data/1khz-6db-20sec.wav"
 
 n0 = 0
-N=2048
+N=256
 
 waveFile = wave.open(fname, 'r')
 nchannles = waveFile.getnchannels()
@@ -39,29 +23,36 @@ print("Sampling rate : ", framerate)
 print("Frame num : ", nframes)
 
 buf = waveFile.readframes(N)
-# #print(buf)
-X = np.frombuffer(buf,dtype='int16')/32768.0
-#print(X)
-# left = X[0::2]
-# print(left)
-c = np.fft.fft(X)[0:int(N/2)]
-c = abs(c)
-print(c)
-print(len(c))
 waveFile.close()
 
+# #print(buf)
+X = np.frombuffer(buf,dtype='int16')
+#print(X)
+#print(len(X))
+X2 = X.astype(np.int32)
+X2 = ((X2[0::2] + X2[1::2]))/32768
+#X2 = (X[0::2])/32768
+#print(X2)
+# print(X2[0::2])
+# print(X2.dtype)
+# left = X[0::2]
+# print(left)
+c = np.fft.fft(X2)[0:int(N/2)]
+c = abs(c)
+# # print(c)
+# # print(len(c))
+
 flist = np.fft.fftfreq(N, d=1.0/framerate)
-print(flist)
-print(len(flist))
+# print(flist)
+# print(len(flist))
 
 plt.subplot(2,1,1)
 plt.title('data')
-plt.plot(range(n0, n0+N), X)
-#plt.axis()
+plt.plot(range(n0, n0+N), X2)
+plt.axis()
 
 plt.subplot(2,1,2)
 plt.title('fft')
-#plt.set_xlim(0, flist[:len(c)])
 plt.plot(flist[:len(c)], c, linestyle='-')
 plt.tight_layout()
 plt.show()
