@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 
 
 
-fname = "./data/1khz-6db-20sec.wav"
+fname = "./data/1khz-6db-20sec.dat"
 
 n0 = 0
-N=256
+N=8192
 
 waveFile = wave.open(fname, 'r')
 nchannles = waveFile.getnchannels()
@@ -43,19 +43,19 @@ c = abs(c)
 # # print(len(c))
 
 flist = np.fft.fftfreq(N, d=1.0/framerate)
-# print(flist)
+print(flist[0:50])
 # print(len(flist))
 
-plt.subplot(2,1,1)
-plt.title('data')
-plt.plot(range(n0, n0+N), X2)
-plt.axis()
+# plt.subplot(2,1,1)
+# plt.title('data')
+# plt.plot(range(n0, n0+N), X2)
+# plt.axis()
 
-plt.subplot(2,1,2)
-plt.title('fft')
-plt.plot(flist[:len(c)], c, linestyle='-')
-plt.tight_layout()
-plt.show()
+# plt.subplot(2,1,2)
+# plt.title('fft')
+# plt.plot(flist[:len(c)], c, linestyle='-')
+# plt.tight_layout()
+# plt.show()
 
 #print(left[0])
 #print(X)
