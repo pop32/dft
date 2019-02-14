@@ -3,6 +3,7 @@ memo
 
 pip install numpy
 pip install matplotlib
+pip install pyaudio
 
 sound data
 https://www.mediacollege.com/audio/tone/download/
